@@ -1,0 +1,18 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class Program1 {
+public static void main(String[] args) {
+WebDriver driver=new ChromeDriver();
+driver.get("https://www.google.com/maps/@13.1334144,77.594624,14z?entry=ttu&g_ep=E
+goyMDI0MTAwMS4wIKXMDSoASAFQAw%3D%3D");
+String a= driver.getTitle();
+if(a.equals("Google Maps"))
+{
+System.out.println("test passed");
+}
+else {
+System.out.println("test failed");
+}
+}
+}
