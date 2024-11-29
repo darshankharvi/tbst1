@@ -1,0 +1,33 @@
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Programfour {
+
+public static void main(String argas[]) {
+
+WebDriver driver= new ChromeDriver();
+
+driver.get("http://lms.nmit.ac.in/moodle/");
+
+driver.findElement(By.linkText("Log in")).click();
+
+//driver.navigate().to("http://lms.nmit.ac.in/moodle/login/index.php");
+
+driver.findElement(By.name("username")).sendKeys("27809");
+
+driver.findElement(By.name("password")).sendKeys("@S1h2r3e4s5h6a7");
+
+driver.findElement(By.id("loginbtn")).click();
+
+//WebElement
+
+//driver.findElement(By.id("loginbtn")).sendKeys(Keys.RETURN);
+
+}
+
+}
