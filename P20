@@ -1,0 +1,64 @@
+package pgm1; 
+import java.io.BufferedReader; 
+import java.io.FileReader; 
+import java.io.IOException; 
+import org.openqa.selenium.By; 
+import org.openqa.selenium.WebDriver; 
+import org.openqa.selenium.WebElement; 
+import org.openqa.selenium.chrome.ChromeDriver; 
+import org.openqa.selenium.edge.EdgeDriver; 
+public class p20 { 
+public static void main(String[] args) { 
+String[] browsers = {"chrome", "edge"}; // Add more browsers as needed 
+String csvFile = "C://Users//Administrator//Desktop//pswd.csv"; 
+String line; 
+for (String browser : browsers) { 
+WebDriver driver = getDriver(browser); 
+if (driver == null) { 
+System.out.println("Skipping unsupported browser: " + browser); 
+continue; 
+} 
+try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) { 
+br.readLine(); // Skip the header row 
+while ((line = br.readLine()) != null) { 
+String[] data = line.split(","); 
+String username = data[0]; 
+String password = data[1]; 
+// Navigate to the login page 
+driver.get("http://lms.nmit.ac.in/moodle/login/index.php"); 
+// Locate elements on the page 
+WebElement usernameField = driver.findElement(By.id("username")); 
+WebElement passwordField = driver.findElement(By.id("password")); 
+WebElement loginBtn = driver.findElement(By.id("loginbtn")); 
+// Perform actions on the page 
+usernameField.sendKeys(username); 
+passwordField.sendKeys(password); 
+loginBtn.click(); 
+// Add any additional actions or assertions if needed 
+System.out.println("Login attempted for user: " + username + " on " + browser); 
+} 
+} catch (IOException e) { 
+e.printStackTrace(); 
+} finally { 
+if (driver != null) { 
+driver.quit(); // Quit the driver to close the browser 
+} 
+} 
+} 
+} 
+// Factory method to create WebDriver instances 
+public static WebDriver getDriver(String browser) { 
+WebDriver driver = null; 
+switch (browser.toLowerCase()) { 
+case "chrome": 
+driver = new ChromeDriver(); // Automatically handled by Selenium 4.6.0+ 
+break; 
+case "edge": 
+driver = new EdgeDriver(); // Automatically handled by Selenium 4.6.0+ 
+break; 
+default: 
+System.out.println("Unsupported browser: " + browser); 
+} 
+return driver; 
+} 
+} 
