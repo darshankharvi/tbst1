@@ -1,0 +1,81 @@
+1. Use Relative XPath or CSS Selectors 
+• Avoid relying on absolute XPaths (e.g., /html/body/div[1]/div[2]/span) because they break with 
+small DOM changes. 
+• Use relative XPaths or CSS selectors that are less likely to change.  
+o Example:  
+o element = driver.find_element(By.XPATH, "//div[@class='dynamic
+class']//button[text()='Click Me']") 
+or  
+element = driver.find_element(By.CSS_SELECTOR, "div.dynamic-class button") 
+2. Wait for Elements to be Present 
+Dynamic elements often take time to load. Use Selenium's explicit waits to wait for elements to appear, 
+become clickable, or have a specific state. 
+• Example:  
+• from selenium.webdriver.common.by import By 
+• from selenium.webdriver.support.ui import WebDriverWait 
+• from selenium.webdriver.support import expected_conditions as EC 
+•  
+• wait = WebDriverWait(driver, 10)  # 10-second wait 
+• element = wait.until(EC.presence_of_element_located((By.ID, "dynamic-id"))) 
+3. Handle Changing Attributes 
+Dynamic elements may have attributes like IDs that change over time. Use partial matches with contains 
+or starts-with in XPath. 
+• Example:  
+• element = driver.find_element(By.XPATH, "//*[contains(@id, 'partial-id')]") 
+4. Work with Index or Parent-Child Relationships 
+If dynamic elements are part of a group, you can use indexing or relationships. 
+• Example: Find the first button inside a specific container.  
+• element = driver.find_element(By.XPATH, "(//div[@class='container']//button)[1]") 
+5. Use Stable Locators 
+• Look for stable attributes like data-* attributes, name, class, or other fixed values. 
+• Example:  
+• element = driver.find_element(By.CSS_SELECTOR, "[data-testid='stable-identifier']") 
+6. Use JavaScript Execution 
+If the element is difficult to locate using traditional locators, JavaScript execution can help. 
+• Example:  
+• element = driver.execute_script("return document.querySelector('div.dynamic-class button');") 
+7. Scroll into View 
+Sometimes dynamic elements may not be in the visible viewport. Use JavaScript to scroll to the element. 
+• Example:  
+• element = driver.find_element(By.XPATH, "//div[@class='dynamic-class']") 
+• driver.execute_script("arguments[0].scrollIntoView(true);", element) 
+8. Handle Stale Element Exceptions 
+Dynamic elements can be re-rendered, leading to StaleElementReferenceException. Re-locate the 
+element after catching the exception. 
+• Example:  
+• from selenium.common.exceptions import StaleElementReferenceException 
+•  
+• try: 
+•     element = driver.find_element(By.ID, "dynamic-id") 
+•     element.click() 
+• except StaleElementReferenceException: 
+•     element = driver.find_element(By.ID, "dynamic-id") 
+•     element.click() 
+9. Use Retry Mechanism 
+In case the element appears after some retries, implement a retry mechanism. 
+• Example:  
+• import time 
+•  
+• for _ in range(5):  # Retry 5 times 
+•     try: 
+•         element = driver.find_element(By.XPATH, "//div[@class='dynamic-class']") 
+•         element.click() 
+•         break 
+•     except Exception as e: 
+•         time.sleep(2)  # Wait before retrying 
+10. Debugging with DevTools 
+Use Chrome DevTools or similar tools to inspect dynamic element behaviors, events, or properties. 
+Tools and Best Practices 
+1. SelectorsHub: A browser extension to generate robust selectors. 
+2. Dynamic Locator Strategy: Regularly verify your locators against updated DOM. 
+3. Modularize Your Locators: Store locators separately in a dictionary or class  
+EXAMPLES: 
+1. WebElement exp = 
+wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href
+ ,'#')]"))); 
+2. driver.findElement(By.xpath("//div[text()='Not now']")).click(); 
+3. WebElement username = 
+wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username"))); 
+4. driver.findElement(By.xpath("//*[text()='Log in']")).submit(); 
+5. ((JavascriptExecutor) 
+driver).executeScript("arguments[0].scrollIntoView(true);", sendButton);
