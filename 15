@@ -1,0 +1,56 @@
+package pgm1; 
+import org.openqa.selenium.WebDriver; 
+import org.openqa.selenium.chrome.ChromeDriver; 
+import org.openqa.selenium.By; 
+import org.openqa.selenium.WebElement; 
+import java.io.BufferedReader; 
+import java.io.FileReader; 
+import java.io.IOException; 
+public class pgm19 { 
+public static void main(String[] args) { 
+WebDriver driver = new ChromeDriver(); 
+// Path to your CSV file containing usernames and passwords 
+String csvFile = "C://Users//Administrator//Desktop//pswd.csv"; 
+String line; 
+// Use try-with-resources to automatically close the BufferedReader 
+try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) { 
+// Skip the header line in CSV file (if there is one) 
+br.readLine(); 
+// Read each line from the CSV 
+while ((line = br.readLine()) != null) { 
+// Split each line by comma to separate username and password 
+String[] data = line.split(","); 
+String username = data[0]; // Username is the first column 
+String password = data[1]; // Password is the second column 
+// Navigate to the login page 
+driver.get("http://lms.nmit.ac.in/moodle/login/index.php"); 
+// Locate the login fields and button 
+WebElement usernameField = driver.findElement(By.id("username")); 
+WebElement passwordField = driver.findElement(By.id("password")); 
+WebElement loginButton = driver.findElement(By.id("loginbtn")); 
+// Enter the credentials 
+usernameField.sendKeys(username);  // Use the username from CSV 
+passwordField.sendKeys(password);  // Use the password from CSV 
+loginButton.click(); 
+// Wait for page load and check if login was successful 
+if (driver.getCurrentUrl().contains("http://lms.nmit.ac.in/moodle/my/")) { 
+System.out.println("Logged in successfully for user: " + username); 
+} else { 
+System.out.println("Failed to log in for user: " + username); 
+} 
+// Add a short delay between logins (if needed, to avoid being rate-limited or 
+flagged) 
+} 
+try { 
+Thread.sleep(2000); // Sleep for 2 seconds before next iteration (optional) 
+} catch (InterruptedException e) { 
+e.printStackTrace(); 
+} 
+} catch (IOException e) { 
+e.printStackTrace(); 
+} finally { 
+// Ensure the browser is closed properly even if an exception occurs 
+driver.quit(); 
+} 
+} 
+} 
