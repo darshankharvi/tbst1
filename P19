@@ -1,0 +1,65 @@
+package pgm1; 
+import java.time.Duration; 
+import org.openqa.selenium.By; 
+import org.openqa.selenium.WebDriver; 
+import org.openqa.selenium.WebElement; 
+import org.openqa.selenium.chrome.ChromeDriver; 
+public class NotificationsAlert { 
+  public static void main(String[] args) { 
+          WebDriver driver=new ChromeDriver(); 
+       try {  
+           driver.get("https://the-internet.herokuapp.com/javascript_alerts"); 
+           driver.manage().window().maximize(); 
+           driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10)); 
+            
+           //alert 
+           WebElement alertButton 
+=driver.findElement(By.xpath("//button[text()='Click for JS Alert']")); 
+           alertButton.click(); 
+           driver.switchTo().alert().accept(); 
+     
+           WebElement resultText = driver.findElement(By.id("result")); 
+           if(resultText.getText().equals("you successfully clicked an alert")) { 
+            System.out.println("simple alert handled successfully"); 
+           }else { 
+            System.out.println("simple alert handling failed"); 
+           } 
+           Thread.sleep(5000); 
+           
+           //confirm 
+           WebElement confirmButton 
+=driver.findElement(By.xpath("//button[text()='Click for JS Confirm']")); 
+           confirmButton.click(); 
+           driver.switchTo().alert().dismiss(); 
+           WebElement resultText1 = driver.findElement(By.id("result")); 
+           if(resultText1.getText().equals("you clicked: cancel")) { 
+            System.out.println("confirmation alert handled successfully"); 
+           }else { 
+            System.out.println("confirmation alert handling failed"); 
+           } 
+           Thread.sleep(5000); 
+            
+           //prompt 
+           WebElement prompButton 
+=driver.findElement(By.xpath("//button[text()='Click for JS Prompt']")); 
+           prompButton.click(); 
+           driver.switchTo().alert().sendKeys("Hello, Selenium!"); 
+           driver.switchTo().alert().accept(); 
+            
+           WebElement resultText2 = driver.findElement(By.id("result")); 
+           if(resultText2.getText().equals("you entered: Hello, Selenium!")) { 
+            System.out.println("prompt alert handled successfully"); 
+           }else { 
+            System.out.println("prompt alert handling failed"); 
+           } 
+           Thread.sleep(5000); 
+          
+} 
+catch (InterruptedException e) { 
+e.printStackTrace(); 
+} 
+finally { 
+driver.quit(); 
+} 
+} 
+}
